@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Lobbies{% endblock %}
+{% block content %}
+
+    <style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 50%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+    </style>
+    <table>
+        <tr>
+            <th>GAME ID</th>
+            <th>PLAYERS</th>
+            <th>MAX PLAYERS</th> 
+        </tr>
+    {% for item in data %}
+                <tr onclick = "() => {get(this)}">
+                    <td>{{item[0]}}</td>
+                    <td> 0 </td>
+                    <td>{{item[1]}}</td></a>
+        </tr>
+    {% endfor %}
+
+    </table>
+
+    <script type="text/javascript" charset="utf-8">
+        document.getElementById('myForm').submit();
+    </script>
+
+{% endblock %}
+
