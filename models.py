@@ -42,13 +42,13 @@ def get_games():
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
-    cur.execute("SELECT * FROM games")
+    cur.execute("SELECT * FROM GamesView")
     return cur.fetchall()
 
 def get_players(game_id):
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
-    cur.execute("SELECT * FROM UserGames where game_id =? AND active = 1",(str(game_id)))
+    cur.execute("SELECT * FROM UserGames where game_id =" + str(game_id))
     return cur.fetchall()
 
 # Koniec zmian
@@ -73,6 +73,7 @@ def is_in_game(user_id, game_id):
 # join_game(6, 1)
 # join_game(1, 2)
 # join_game(2, 2)
+
 
 # conn = sqlite3.connect('PokerDatabase')
 # with open('schema.sql') as f:

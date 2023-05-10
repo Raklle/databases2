@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+    <form method="POST">
+        <p>
+            <label for="first">Firstname</label>
+            <input id="first" name="firstname" type="text">
+        </p>
+        <p>
+            <label for="last">Lastname</label>
+            <input id="last" name="lastname" type="text">
+        </p>
+        <p>
+            <label for="email">Email</label>
+            <input id="email" name="Email" type="text">
+        </p>
+        <p>
+            <label for="Country">Country</label>
+            <input id="Country" name="Country" type="text">
+        </p>
+        <input type="submit" value="Signup">
+    </form>
+{% endblock %}
