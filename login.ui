@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='utf-8'?>
+<interface version="1.3">
+  <object class="tk.Frame" id="main_frame" named="True">
+    <property name="background">#e0e0e0</property>
+    <property name="borderwidth">2</property>
+    <property name="container">false</property>
+    <property name="height">600</property>
+    <property name="width">800</property>
+    <layout manager="pack">
+      <property name="side">top</property>
+    </layout>
+    <child>
+      <object class="tk.Frame" id="Firstname_frame" named="True">
+        <property name="background">#b8b8b8</property>
+        <property name="height">100</property>
+        <property name="width">200</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="padx">50</property>
+          <property name="pady">15</property>
+          <property name="row">1</property>
+        </layout>
+        <containerlayout manager="grid">
+          <property type="row" id="0" name="pad">00</property>
+        </containerlayout>
+        <child>
+          <object class="tk.Entry" id="entry2">
+            <property name="borderwidth">1</property>
+            <property name="width">50</property>
+            <layout manager="grid">
+              <property name="column">1</property>
+              <property name="ipady">5</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Label" id="label26">
+            <property name="background">#b8b8b8</property>
+            <property name="font">{gothic} 11 {italic}</property>
+            <property name="height">2</property>
+            <property name="text" translatable="yes">Firstname</property>
+            <property name="width">20</property>
+            <layout manager="grid">
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Frame" id="frame16">
+        <property name="background">#e0e0e0</property>
+        <property name="height">30</property>
+        <property name="width">800</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="row">0</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Frame" id="frame17">
+        <property name="background">#e0e0e0</property>
+        <property name="height">30</property>
+        <property name="width">800</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="row">17</property>
+        </layout>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Frame" id="frame22" named="True">
+        <property name="background">#b8b8b8</property>
+        <property name="height">100</property>
+        <property name="width">200</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="padx">50</property>
+          <property name="pady">15</property>
+          <property name="row">12</property>
+        </layout>
+        <containerlayout manager="grid">
+          <property type="row" id="0" name="pad">00</property>
+        </containerlayout>
+        <child>
+          <object class="tk.Label" id="label21">
+            <property name="background">#b8b8b8</property>
+            <property name="font">{gothic} 11 {italic}</property>
+            <property name="height">2</property>
+            <property name="text" translatable="yes">Lastname</property>
+            <property name="width">20</property>
+            <layout manager="grid">
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Entry" id="entry20">
+            <property name="borderwidth">1</property>
+            <property name="width">50</property>
+            <layout manager="grid">
+              <property name="column">1</property>
+              <property name="ipady">5</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Frame" id="frame23" named="True">
+        <property name="background">#b8b8b8</property>
+        <property name="height">100</property>
+        <property name="width">200</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="padx">50</property>
+          <property name="pady">15</property>
+          <property name="row">13</property>
+        </layout>
+        <containerlayout manager="grid">
+          <property type="row" id="0" name="pad">00</property>
+        </containerlayout>
+        <child>
+          <object class="tk.Entry" id="entry21">
+            <property name="borderwidth">1</property>
+            <property name="width">50</property>
+            <layout manager="grid">
+              <property name="column">1</property>
+              <property name="ipady">5</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Label" id="label27">
+            <property name="background">#b8b8b8</property>
+            <property name="font">{gothic} 11 {italic}</property>
+            <property name="height">2</property>
+            <property name="text" translatable="yes">Email</property>
+            <property name="width">20</property>
+            <layout manager="grid">
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Frame" id="frame25" named="True">
+        <property name="background">#b8b8b8</property>
+        <property name="height">100</property>
+        <property name="width">200</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="padx">50</property>
+          <property name="pady">15</property>
+          <property name="row">15</property>
+        </layout>
+        <containerlayout manager="grid">
+          <property type="row" id="0" name="pad">00</property>
+        </containerlayout>
+        <child>
+          <object class="tk.Frame" id="frame26">
+            <property name="height">200</property>
+            <property name="width">300</property>
+            <layout manager="grid">
+              <property name="column">1</property>
+              <property name="row">0</property>
+            </layout>
+            <child>
+              <object class="tk.OptionMenu" id="optionmenu2">
+                <property name="value">Countries</property>
+                <layout manager="pack">
+                  <property name="expand">true</property>
+                  <property name="ipadx">125</property>
+                </layout>
+              </object>
+            </child>
+          </object>
+        </child>
+        <child>
+          <object class="tk.Label" id="label28">
+            <property name="background">#b8b8b8</property>
+            <property name="font">{gothic} 11 {italic}</property>
+            <property name="height">2</property>
+            <property name="text" translatable="yes">Country</property>
+            <property name="width">20</property>
+            <layout manager="grid">
+              <property name="column">0</property>
+              <property name="row">0</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+    <child>
+      <object class="tk.Frame" id="frame1" named="True">
+        <property name="background">#b8b8b8</property>
+        <property name="height">100</property>
+        <property name="width">200</property>
+        <layout manager="grid">
+          <property name="column">0</property>
+          <property name="padx">50</property>
+          <property name="pady">15</property>
+          <property name="row">16</property>
+        </layout>
+        <containerlayout manager="grid">
+          <property type="row" id="0" name="pad">00</property>
+        </containerlayout>
+        <child>
+          <object class="ttk.Button" id="create_user" named="True">
+            <property name="text" translatable="yes">Create</property>
+            <property name="width">50</property>
+            <layout manager="pack">
+              <property name="side">top</property>
+            </layout>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+</interface>

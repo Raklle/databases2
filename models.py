@@ -1,12 +1,11 @@
 import sqlite3
-
+from pymysql.cursors import DictCursor
 
 def join_game(user_id, game_id):
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
     # jeszcze potem dodam tu że wyrzuca bład jak dołączamy do gry w której jesteśmy,
     # teraz nic się nie dzieje złego w bazie, ale nie ma błędu
-
     try:
         cur.execute('SELECT EXISTS(SELECT 1 FROM UserGames WHERE user_id = ? AND game_id = ?)', (user_id, game_id))
         row_exists = cur.fetchone()[0]
@@ -22,6 +21,25 @@ def join_game(user_id, game_id):
         print(f'Error while joining game: {e}')
     finally:
         conn.close()
+
+def get_games():
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+
+    cur.execute("SELECT * FROM games")
+    return cur.fetchall()
+
+def get_players(game_id):
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM UserGames where game_id =" + str(game_id))
+    return cur.fetchall()
+
+def get_user_data(player_id):
+    conn = sqlite3.connect(database='PokerDatabase')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM Users where id = " + str(player_id)).fetchall()
+    return cur.fetchall()
 
 def leave_game(user_id, game_id):
     conn = sqlite3.connect('PokerDatabase')
@@ -43,6 +61,8 @@ join_game(4, 1)
 leave_game(6, 1)
 join_game(4, 1)
 join_game(6, 1)
+join_game(1, 2)
+join_game(2, 2)
 
 # conn = sqlite3.connect('PokerDatabase')
 # with open('schema.sql') as f:
