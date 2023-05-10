@@ -26,7 +26,7 @@ def get_games():
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
-    cur.execute("SELECT * FROM games")
+    cur.execute("SELECT * FROM GamesView")
     return cur.fetchall()
 
 def get_players(game_id):
@@ -51,6 +51,7 @@ def leave_game(user_id, game_id):
         print(f'Error while leaving game: {e} (User ID: {user_id})')
     finally:
         conn.close()
+
 
 
 join_game(4, 1)

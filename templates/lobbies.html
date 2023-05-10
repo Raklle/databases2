@@ -1,8 +1,7 @@
 {% extends 'base.html' %}
 {% block title %}Lobbies{% endblock %}
 {% block content %}
-
-    <style>
+  <style>
     table {
       font-family: arial, sans-serif;
       border-collapse: collapse;
@@ -18,26 +17,26 @@
     tr:nth-child(even) {
       background-color: #dddddd;
     }
-    </style>
-    <table>
-        <tr>
-            <th>GAME ID</th>
-            <th>PLAYERS</th>
-            <th>MAX PLAYERS</th> 
-        </tr>
+  </style>
+
+  <table>
+    <tr>
+      <th>GAME ID</th>
+      <th>PLAYERS</th>
+      <th>MAX PLAYERS</th> 
+      <th>JOIN ROOM</th>
+    </tr>
     {% for item in data %}
-                <tr onclick = "() => {get(this)}">
-                    <td>{{item[0]}}</td>
-                    <td> 0 </td>
-                    <td>{{item[1]}}</td></a>
-        </tr>
-    {% endfor %}
-
-    </table>
-
-    <script type="text/javascript" charset="utf-8">
-        document.getElementById('myForm').submit();
-    </script>
+    <tr>
+      <form action="\room" method="POST">
+        <td>{{item[0]}}</td>
+        <td>{{item[2]}}</td>
+        <td>{{item[1]}}</td>
+        <td><button name="test" type="submit" value={{item}}> JOIN ROOM</button></td>
+      </form>
+    </tr>
+  {% endfor %}
+  </table>
 
 {% endblock %}
 
