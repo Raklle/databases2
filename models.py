@@ -1,5 +1,4 @@
 import sqlite3
-from pymysql.cursors import DictCursor
 
 def join_game(user_id, game_id):
     conn = sqlite3.connect('PokerDatabase')
@@ -22,6 +21,7 @@ def join_game(user_id, game_id):
     finally:
         conn.close()
 
+# Podstawowe zapytania do testu 
 def get_games():
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
@@ -35,11 +35,7 @@ def get_players(game_id):
     cur.execute("SELECT * FROM UserGames where game_id =" + str(game_id))
     return cur.fetchall()
 
-def get_user_data(player_id):
-    conn = sqlite3.connect(database='PokerDatabase')
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM Users where id = " + str(player_id)).fetchall()
-    return cur.fetchall()
+# Koniec zmian 
 
 def leave_game(user_id, game_id):
     conn = sqlite3.connect('PokerDatabase')
