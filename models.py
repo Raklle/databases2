@@ -21,21 +21,6 @@ def join_game(user_id, game_id):
     finally:
         conn.close()
 
-# Podstawowe zapytania do testu 
-def get_games():
-    conn = sqlite3.connect('PokerDatabase')
-    cur = conn.cursor()
-
-    cur.execute("SELECT * FROM games")
-    return cur.fetchall()
-
-def get_players(game_id):
-    conn = sqlite3.connect('PokerDatabase')
-    cur = conn.cursor()
-    cur.execute("SELECT * FROM UserGames where game_id =" + str(game_id))
-    return cur.fetchall()
-
-# Koniec zmian 
 
 def leave_game(user_id, game_id):
     conn = sqlite3.connect('PokerDatabase')
@@ -52,13 +37,42 @@ def leave_game(user_id, game_id):
     finally:
         conn.close()
 
+# Podstawowe zapytania do testu
+def get_games():
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
 
-join_game(4, 1)
-leave_game(6, 1)
-join_game(4, 1)
-join_game(6, 1)
-join_game(1, 2)
-join_game(2, 2)
+    cur.execute("SELECT * FROM games")
+    return cur.fetchall()
+
+def get_players(game_id):
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    cur.execute("SELECT * FROM UserGames where game_id =? AND active = 1",(str(game_id)))
+    return cur.fetchall()
+
+# Koniec zmian
+
+def is_in_game(user_id, game_id):
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    cur.execute('SELECT EXISTS(SELECT 1 FROM UserGames WHERE user_id = ? AND game_id = ?)', (user_id, game_id))
+    row_exists = cur.fetchone()[0]
+    conn.close()
+    if not row_exists:
+       return True
+    else:
+        return False
+
+
+
+
+# join_game(4, 1)
+# leave_game(6, 1)
+# join_game(4, 1)
+# join_game(6, 1)
+# join_game(1, 2)
+# join_game(2, 2)
 
 # conn = sqlite3.connect('PokerDatabase')
 # with open('schema.sql') as f:
