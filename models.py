@@ -256,6 +256,59 @@ def withdraw(user_id, money):
     finally:
         conn.close()
 
+def get_user_transaction_history(user_id):
+    """
+    This function retrieves the transaction history of a user.
+
+    Parameters:
+    - user_id: ID of the user
+
+    Returns:
+    - User's transaction history
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    try:
+        cur.execute('''SELECT g.id, g.payer_id, g.receiver_id, g.payment_amount 
+                        FROM TransactionsHistory AS g 
+                        WHERE ? = payer_id OR ? = receiver_id''',
+                    (user_id, user_id))
+        result = cur.fetchall()
+        return result
+    except sqlite3.Error as e:
+        print(f'Error while retrieving user transaction history: {e}')
+
+    finally:
+        conn.close()
+
+
+def add_user(first_name, last_name, email, country):
+    """
+    This function adds a user to the Users table. New country is added to Country table, if given doesn't exist.
+
+    Parameters:
+    - first_name: first name of the user
+    - last_name: last name of the game
+    - email: email of the user
+    - country: country ot the user
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+
+    try:
+        cur.execute('SELECT EXISTS(SELECT 1 FROM Country WHERE CountryName = ?)', (country,))
+        country_exists = cur.fetchone()[0]
+        if not country_exists:
+            cur.execute('INSERT INTO Country (CountryName) VALUES (?)',
+                        (country,))
+        cur.execute('INSERT INTO Users (first_name, last_name, email, balance, country) VALUES (?, ?, ?, ?, ?)', (first_name, last_name, email, 0, country))
+        conn.commit()
+    except sqlite3.Error as e:
+        conn.rollback()
+        print(f'Error while creating user: {e}')
+    finally:
+        conn.close()
+
 # conn = sqlite3.connect('PokerDatabase')
 # with open('schema.sql') as f:
 #     conn.executescript(f.read())
