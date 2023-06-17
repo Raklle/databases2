@@ -13,8 +13,8 @@ def lobbies():
         print(request.values)
         return render_template('room.html', data=request.values)
 
-    print(models.get_games())
-    return render_template('lobbies.html', data=models.get_games())
+    print(models.get_active_games())
+    return render_template('lobbies.html', data=models.get_active_games())
 
 @app.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
@@ -30,7 +30,7 @@ def sign_up():
 def printer():
     # print(request.form.get('test')[1])
     models.join_game("10", request.form.get('test')[1])
-    # print(models.get_players(request.form.get('test')[1]))
+    # print(models.get_active_players(request.form.get('test')[1]))
     return render_template('room.html', data=models.get_players(request.form.get('test')[1]))
 
 

@@ -27,9 +27,9 @@
 -- CREATE TABLE TransactionsHistory (
 --     id INTEGER PRIMARY KEY AUTOINCREMENT,
 --     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
---     payer_id INTEGER NOT NULL,
---     receiver_id INTEGER NOT NULL,
---     game_id INTEGER NOT NULL,
+--     payer_id INTEGER,
+--     receiver_id INTEGER,
+--     game_id INTEGER,
 --     payment_amount INTEGER NOT NULL,
 --     FOREIGN KEY (payer_id) REFERENCES Users (id) ON DELETE CASCADE,
 --     FOREIGN KEY (receiver_id) REFERENCES Users (id) ON DELETE CASCADE,
@@ -72,3 +72,10 @@
 -- CREATE VIEW GamesView AS SELECT id, seats, (SELECT COUNT(*) FROM UserGames WHERE game_id =g.id AND active = 1 ) active_players FROM Games AS g;
 --
 
+-- CREATE TRIGGER PreventNegativeBalance
+-- BEFORE UPDATE ON Users
+-- FOR EACH ROW
+-- WHEN NEW.balance < 0
+-- BEGIN
+--     SELECT RAISE(ABORT, 'Balance cannot be negative');
+-- END;
