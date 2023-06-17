@@ -92,7 +92,6 @@ def get_players(game_id):
     cur.execute("SELECT * FROM UserGames where game_id =" + str(game_id))
     return cur.fetchall()
 
-# Koniec zmian
 
 def is_in_game(user_id, game_id):
     """
@@ -127,7 +126,6 @@ def get_user_game_history(user_id):
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
-
     try:
         cur.execute('''SELECT g.id, g.start_date, g.end_date, g.seats 
                         FROM Games AS g 
@@ -135,6 +133,7 @@ def get_user_game_history(user_id):
                     (user_id,))
         result = cur.fetchall()
         return result
+
 
     except sqlite3.Error as e:
         print(f'Error while retrieving user game history: {e}')
@@ -225,10 +224,9 @@ def deposit(user_id, money):
         cur.execute('INSERT INTO TransactionsHistory (payer_id, receiver_id, game_id, payment_amount) VALUES (?, ?, ?, ?)', (user_id,None,None, money))
         conn.commit()
         return
-
-
     except sqlite3.Error as e:
-        print(f'Error while processing money deposit: {e}')
+        print(f'Error while retrieving user game history: {e}')
+
     finally:
         conn.close()
 
@@ -258,3 +256,7 @@ def withdraw(user_id, money):
     finally:
         conn.close()
 
+# conn = sqlite3.connect('PokerDatabase')
+# with open('schema.sql') as f:
+#     conn.executescript(f.read())
+# conn.close()
