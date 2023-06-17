@@ -4,6 +4,13 @@ class AlreadyInGameException(Exception):
     pass
 
 def join_game(user_id, game_id):
+    """
+    This function allows a user to join a game by inserting a new record into the UserGames table.
+
+    Parameters:
+    - user_id: ID of the user
+    - game_id: ID of the game
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
@@ -36,6 +43,13 @@ def join_game(user_id, game_id):
 
 
 def leave_game(user_id, game_id):
+    """
+    This function allows a user to leave a game by updating the active status in the UserGames table.
+
+    Parameters:
+    - user_id: ID of the user
+    - game_id: ID of the game
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
@@ -50,8 +64,13 @@ def leave_game(user_id, game_id):
     finally:
         conn.close()
 
-# Podstawowe zapytania do testu
 def get_active_games():
+    """
+    This function retrieves a list of active games.
+
+    Returns:
+    - A list of active games
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
@@ -59,6 +78,15 @@ def get_active_games():
     return cur.fetchall()
 
 def get_players(game_id):
+    """
+    This function retrieves a list of players for a specific game.
+
+    Parameters:
+    - game_id: ID of the game
+
+    Returns:
+    - A list of players for the given game
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
     cur.execute("SELECT * FROM UserGames where game_id =" + str(game_id))
@@ -67,6 +95,16 @@ def get_players(game_id):
 # Koniec zmian
 
 def is_in_game(user_id, game_id):
+    """
+    This function checks if a user is already in a game.
+
+    Parameters:
+    - user_id: ID of the user
+    - game_id: ID of the game
+
+    Returns:
+    - True if the user is  in the game, otherwise False
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
     cur.execute('SELECT EXISTS(SELECT 1 FROM UserGames WHERE user_id = ? AND game_id = ?)', (user_id, game_id))
@@ -78,6 +116,15 @@ def is_in_game(user_id, game_id):
         return False
 
 def get_user_game_history(user_id):
+    """
+    This function retrieves the game history of a user.
+
+    Parameters:
+    - user_id: ID of the user
+
+    Returns:
+    - User's game history
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
@@ -96,6 +143,15 @@ def get_user_game_history(user_id):
         conn.close()
 
 def get_active_players(game_id):
+    """
+    This function retrieves the list of active players in a game.
+
+    Parameters:
+    - game_id: ID of the game
+
+    Returns:
+    - A list of active players in the game
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
@@ -114,7 +170,16 @@ def get_active_players(game_id):
     finally:
         conn.close()
 
-def transfer(payer_id, receiver_id,game_id, money):
+def transfer(payer_id, receiver_id, game_id, money):
+    """
+    This function transfers money from the payer's account to the receiver's account.
+
+    Parameters:
+    - payer_id: ID of the payer
+    - receiver_id: ID of the receiver
+    - game_id: ID of the game
+    - money: Amount of money to transfer
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
     try:
@@ -141,6 +206,13 @@ def transfer(payer_id, receiver_id,game_id, money):
         conn.close()
 
 def deposit(user_id, money):
+    """
+    This function deposits money into a user's account.
+
+    Parameters:
+    - user_id: ID of the user
+    - money: Amount of money to deposit
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
     try:
@@ -161,6 +233,13 @@ def deposit(user_id, money):
         conn.close()
 
 def withdraw(user_id, money):
+    """
+    This function withdraws money from a user's account.
+
+    Parameters:
+    - user_id: ID of the user
+    - money: Amount of money to withdraw
+    """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
     try:
@@ -179,9 +258,3 @@ def withdraw(user_id, money):
     finally:
         conn.close()
 
-withdraw(2, 1000)
-
-# conn = sqlite3.connect('PokerDatabase')
-# with open('schema.sql') as f:
-#     conn.executescript(f.read())
-# conn.close()
