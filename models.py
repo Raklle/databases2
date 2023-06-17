@@ -65,6 +65,7 @@ def is_in_game(user_id, game_id):
         return False
 
 
+<<<<<<< Updated upstream
 
 
 # join_game(4, 1)
@@ -75,7 +76,9 @@ def is_in_game(user_id, game_id):
 # join_game(2, 2)
 
 
+=======
+>>>>>>> Stashed changes
 # conn = sqlite3.connect('PokerDatabase')
 # with open('schema.sql') as f:
 #     conn.executescript(f.read())
-# conn.close()
+# conn.close(
