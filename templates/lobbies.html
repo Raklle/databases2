@@ -19,12 +19,29 @@
     }
   </style>
 
+  <script>
+    function handleButtonClick() {
+      {% if actual_button == 'true'%}
+        document.getElementById('actual').value = 'false'
+        document.getElementById('filter_form').submit()
+      {% else %}
+        document.getElementById('actual').value = 'true'
+        document.getElementById('filter_form').submit()
+      {% endif %}
+    }
+</script>
+
+  <form action="\lobbies" method="POST" id="filter_form">
+    <input type="checkbox" id="actual" name="actual" value="true" onchange=handleButtonClick()>
+    <label for="actual"> SHOW ACTUAL GAMES </label>
+  </form>
+
   <table>
     <tr>
-      <th>GAME ID</th>
+      <th>LOBBY ID</th>
       <th>PLAYERS</th>
       <th>MAX PLAYERS</th> 
-      <th>JOIN ROOM</th>
+      <th>JOIN ROOM<th>
     </tr>
     {% for item in data %}
     <tr>

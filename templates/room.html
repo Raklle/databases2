@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}ROOM{% endblock %}
+{% block title %} ROOM {% endblock %}
 {% block content %}
 
 <style>
@@ -23,15 +23,20 @@
   <table>
     <tr>
         <th>USERID</th> 
-        <th>FIRSTNAME</th>
+        <th>NAME</th>
     </tr>
     {% for item in data %}
     <tr>
         <td>{{item[0]}}</td>
-        <td>{{item[3]}}</td>
+        <td>{{item[1]}}</td>
       </form>
     </tr>
-  {% endfor %}
+    {% endfor %}
+
+    <form action="/lobbies" method="post">
+      <button type="submit" name="leave_room" value="leave_room">leave room</button>
+    <form>
+
   </table>
 
 {% endblock %}

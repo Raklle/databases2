@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+    <form method="POST">
+        <p>
+            <label for="email">Email</label>
+            <input id="user_email" name="email" type="text">
+        </p>
+        <p>
+            <label for="password">Password</label>
+            <input id="user_password" name="password" type="password">
+        </p>
+        
+        {% if error %}
+        <p>{{error[0]}}<p>
+        {%  endif %}
+
+        <input type="submit" value="Sign in">
+    </form>
+{% endblock %}
