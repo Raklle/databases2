@@ -32,16 +32,18 @@
     }
 </script>
 
+  <h2> Games </h2>
+
   <form action="\lobbies" method="POST" id="filter_form">
     <input type="checkbox" id="actual" name="actual" onchange=handleButtonClick()>
-    <label for="actual"> SHOW ACTUAL GAMES </label>
+    <label for="actual">Show games not ended</label><br><br>
 
-    <input type="text" id="minimal_players" name="minimal_no_players" value="{{min_players}}" onchange=handleButtonClick()>
     <label for="minimal_no_players"> Minimum no. players </label>
+    <input type="text" id="minimal_players" name="minimal_no_players" value="{{min_players}}" onchange=handleButtonClick()><br><br>
 
-    <input type="text" id="maximum" name="maximum_no_players"  value="{{max_players}}" onchange=handleButtonClick()>
     <label for="maximum_no_players"> Maximum no. players </label>
-  </form>
+    <input type="text" id="maximum" name="maximum_no_players"  value="{{max_players}}" onchange=handleButtonClick()>
+  </form><br><br>
 
   <table>
     <tr>

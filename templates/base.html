@@ -1,7 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <p>MENU!</p>
+
+    <style>
+        #menu_navbar_ul {
+        list-style-type: none;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+        }
+
+        .navbar_link {
+        float: left;
+        }
+
+        .navbar_link a {
+        display: block;
+        padding: 8px;
+        }
+    </style>
+
+    <ul id="menu_navbar_ul">
+        <li class="navbar_link"><a href="/">Home</a></li>
+        {% if show_user_profile%}
+            <li class="navbar_link"><a href="/user-profile">User Profile</a></li>
+            <li class="navbar_link"><a href="/lobbies">Show Games</a></li>
+            <li class="navbar_link"><a href="/logout">Log out<a></li>
+        {% endif %}
+      </ul>
+      
     <meta charset="UTF-8">
     <title>{% block title %}Title{% endblock %}</title>
 </head>

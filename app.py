@@ -37,7 +37,7 @@ def user_profile():
             password = bcrypt.hashpw(request.form['password'].encode("utf-8"), bcrypt.gensalt())
             models.update_data(user_id, first_name, last_name, email, country, password)
     
-    return render_template('user-profile.html', user_data = user_id, data=models.get_user_data(user_id)[0])
+    return render_template('user-profile.html', user_data = user_id, data=models.get_user_data(user_id)[0], show_user_profile = "True")
 
 @app.route('/lobbies', methods=['GET', 'POST'])
 def lobbies():
@@ -48,7 +48,7 @@ def lobbies():
     if request.method == 'POST' or request.method == 'GET':
         if "leave_room" in request.form:
             models.leave_game(user_id, game_id)
-            return render_template('lobbies.html', data=models.get_filtered_games(True), actual_button = 'True', min_players = '0', max_players = '6')
+            return render_template('lobbies.html', data=models.get_filtered_games(True), actual_button = 'True', min_players = '0', max_players = '6', show_user_profile = "True")
         
         if "test" in request.form:
             game_id = request.form.get('test')[1]
@@ -64,9 +64,9 @@ def lobbies():
             else:
                 show_actual = False
 
-            return render_template('lobbies.html', data=models.get_filtered_games(show_actual, min_players, max_players),  actual_button = show_actual, min_players = str(min_players), max_players = str(max_players))
+            return render_template('lobbies.html', data=models.get_filtered_games(show_actual, min_players, max_players),  actual_button = show_actual, min_players = str(min_players), max_players = str(max_players), show_user_profile = "True")
 
-    return render_template('lobbies.html', data=models.get_filtered_games(True), actual_button = 'True',  min_players = '0', max_players ='6')
+    return render_template('lobbies.html', data=models.get_filtered_games(True), actual_button = 'True',  min_players = '0', max_players ='6', show_user_profile = "True")
 
 @app.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
@@ -123,7 +123,7 @@ def room():
     
     game_id = request.form.get('test')[1]
     models.join_game(user_id, game_id)
-    return render_template('room.html', data=models.get_players(game_id))
+    return render_template('room.html', data=models.get_players(game_id), show_user_profile = "True")
 
 @app.route("/history", methods=['GET', 'POST'])
 def history():
@@ -133,9 +133,9 @@ def history():
         return redirect(url_for('index'))
     
     if request.method == 'POST' and "show_players_info" in request.form:
-        return render_template('history.html', game_info=models.get_players(request.form['show_players_info']))
+        return render_template('history.html', game_info=models.get_players(request.form['show_players_info']), show_user_profile = "True")
 
-    return render_template('history.html', data=models.get_player_games_history(user_id))
+    return render_template('history.html', data=models.get_player_games_history(user_id), show_user_profile = "True")
 
 
 # Run the application
