@@ -41,6 +41,32 @@ def join_game(user_id, game_id):
     finally:
         conn.close()
 
+def update_data(user_id, first_name, last_name, email, country, password):
+    """
+    This function is to update user's data.
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    data = (first_name, last_name, email, country, password, user_id)
+
+    try:
+        cur.execute(f"UPDATE Users SET first_name = ?, last_name = ?, email = ?, country = ?, password = ? where id = ?", data)
+        conn.commit()
+    except sqlite3.Error as e:
+        conn.rollback()
+        print(f'Error while modifiying data: {e}')
+    finally:
+        conn.close()
+
+def get_user_data(user_id):
+    """
+    This function retrives user data.
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM Users where id = {user_id}")
+    return cur.fetchall()
+
 def get_games():
     """
     This function retrieves a list of active games.

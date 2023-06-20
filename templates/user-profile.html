@@ -1,35 +1,63 @@
 {% extends 'base.html' %}
-{% block title %} Register {% endblock %}
+{% block title %}Users Profile{% endblock %}
 {% block content %}
+  
+<style>
+    form {
+        padding: 10px;
+    }
+</style>  
 
-    <style>
-        form {
-            padding: 10px;
+{% if data %}
+
+    <script> 
+        function handleButtonClick() {
+            console.log(document.getElementById('button_test').value == "Update Data")
+
+            if (document.getElementById('button_test').value == "Update Data"){
+                document.getElementById('first').removeAttribute('disabled'); 
+                document.getElementById('first').value = ""; 
+
+                document.getElementById('last').removeAttribute('disabled'); 
+                document.getElementById('last').value = ""; 
+
+                document.getElementById('email').removeAttribute('disabled'); 
+                document.getElementById('email').value = ""; 
+
+                document.getElementById('password').removeAttribute('disabled'); 
+                document.getElementById('last').value = ""; 
+
+                document.getElementById('country').removeAttribute('disabled'); 
+                document.getElementById("button_test").value = "Submit!"
+            } else {
+                document.getElementById('myForm').submit()
+                document.getElementById('button_test').value = "Update Data"
+            }
         }
-    </style>    
+    </script>
 
-    <form method="POST">
-        <h2> Register Form </h2>
+    <form method="POST" id = "myForm">
+        <h2> User Profile </h2>
         <h3><p>
             <label for="first">Firstname</label><br>
-            <input id="first" name="firstname" type="text">
+            <input id="first" name="firstname" type="dis" disabled value={{ data[1] }}>
         </p>
         <p>
             <label for="last">Lastname</label><br>
-            <input id="last" name="lastname" type="text">
+            <input id="last" name="lastname" type="text" disabled value={{ data[2] }}>
         </p>
         <p>
             <label for="email">Email</label><br>
-            <input id="email" name="email" type="text">
+            <input id="email" name="email" type="text" disabled value={{ data[4] }}>
         </p>
         <p>
             <label for="password">Password</label><br>
-            <input id="password" name="password" type="password">
+            <input id="password" name="password" type="password" disabled>
         </p>
         <p>
             <label for="country">Country</label><br>
-            <select class="form-select" id="country" name="country">
-                <option value></option>
+            <select class="form-select" id="country" name="country" disabled >
+                <option value={{ data[5] }}> </option>
                 <option value="AF">Afghanistan</option>
                 <option value="AX">Aland Islands</option>
                 <option value="AL">Albania</option>
@@ -283,7 +311,10 @@
                 <option value="ZM">Zambia</option>
                 <option value="ZW">Zimbabwe</option>
             </select>
-        </p>
-        <input type="submit" style="font-size: 15px; font-weight:bold; width:180px;" value="Sign up"></h3>
+        </p></h3>
+        <button type="button" id="button_test" value="Update Data" type="text" onclick=handleButtonClick()>Change data</button>
     </form>
+{% endif %}
+
 {% endblock %}
+
