@@ -9,8 +9,7 @@ game_id = None
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    global user_id, game_id 
-    
+    global user_id, game_id
     if user_id is not None:
         return render_template('index.html', show_user_profile = "True")
     return render_template('index.html')
@@ -27,7 +26,7 @@ def user_profile():
     global user_id, game_id
 
     if user_id is None: 
-        return redirect('index.html')
+        return redirect(url_for('index'))
     
     if request.method == 'POST':
         if "firstname" in request.form: 
@@ -42,27 +41,32 @@ def user_profile():
 
 @app.route('/lobbies', methods=['GET', 'POST'])
 def lobbies():
-    print(models.get_games())
-
-    if request.method == 'POST':
-        global user_id, game_id
-
-        print(request.form)
-
+    global user_id, game_id
+    if user_id is None: 
+        return redirect(url_for('index'))
+ 
+    if request.method == 'POST' or request.method == 'GET':
         if "leave_room" in request.form:
             models.leave_game(user_id, game_id)
-            return render_template('lobbies.html', data=models.get_games(), actual_button = 'false')
+            return render_template('lobbies.html', data=models.get_filtered_games(True), actual_button = 'True', min_players = '0', max_players = '6')
         
         if "test" in request.form:
             game_id = request.form.get('test')[1]
             return render_template('room.html', data=models.get_players(request.form.get('test')[1]))
      
-        if "actual" in request.form:
-            if request.form["actual"] == 'true':
-                return render_template('lobbies.html', data=models.get_filtered_games(),  actual_button = 'true')
-            return render_template('lobbies.html', data=models.get_games(),  actual_button = 'false')
+        if "actual" in request.form or "minimal_no_players" in request.form or "maximum_no_players" in request.form:
 
-    return render_template('lobbies.html', data=models.get_games(), actual_button = 'false')
+            min_players = 0 if request.form["minimal_no_players"] == '' else request.form["minimal_no_players"]
+            max_players = 6 if request.form["maximum_no_players"] == '' else request.form["maximum_no_players"]
+
+            if "actual" in request.form:
+                show_actual = (request.form["actual"] == "on")
+            else:
+                show_actual = False
+
+            return render_template('lobbies.html', data=models.get_filtered_games(show_actual, min_players, max_players),  actual_button = show_actual, min_players = str(min_players), max_players = str(max_players))
+
+    return render_template('lobbies.html', data=models.get_filtered_games(True), actual_button = 'True',  min_players = '0', max_players ='6')
 
 @app.route('/sign-in', methods=['GET', 'POST'])
 def sign_in():
@@ -111,12 +115,27 @@ def register():
     return render_template('register.html', message=error)
 
 @app.route("/room", methods = ["post"])
-def printer():
+def room():
     global user_id, game_id
+
+    if user_id is None: 
+        return redirect(url_for('index'))
+    
     game_id = request.form.get('test')[1]
-    print(f"Joining game {user_id} {game_id}")
     models.join_game(user_id, game_id)
     return render_template('room.html', data=models.get_players(game_id))
+
+@app.route("/history", methods=['GET', 'POST'])
+def history():
+    global user_id
+
+    if user_id is None: 
+        return redirect(url_for('index'))
+    
+    if request.method == 'POST' and "show_players_info" in request.form:
+        return render_template('history.html', game_info=models.get_players(request.form['show_players_info']))
+
+    return render_template('history.html', data=models.get_player_games_history(user_id))
 
 
 # Run the application

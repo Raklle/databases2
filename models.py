@@ -80,6 +80,19 @@ def get_games():
     cur.execute("SELECT * FROM GamesView")
     return cur.fetchall()
 
+def get_player_games_history(user_id):
+    """
+    This function retrieves a history of games for user with user_id.
+
+    Returns:
+    - A list of games
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+
+    cur.execute(f"SELECT * from Games g INNER JOIN UserGames UG on g.id = UG.game_id where UG.user_id = {user_id} and g.end_date is not NULL")
+    return cur.fetchall()
+
 def get_players(game_id):
     """
     This function retrieves a list of players for a specific game.
@@ -96,7 +109,7 @@ def get_players(game_id):
     return cur.fetchall()
 
 
-def get_filtered_games():
+def get_filtered_games(show_active = False, min_players = -9223372036854775808, max_players = 9223372036854775807):
     """
     This function retrieves a list of players for a specific game.
 
@@ -106,10 +119,23 @@ def get_filtered_games():
     Returns:
     - A list of players for the given game
     """
+
+    print(show_active, min_players, max_players)
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
-    cur.execute("SELECT id, seats, (SELECT COUNT(*) FROM UserGames WHERE game_id =g.id AND active = 1 ) active_players FROM Games AS g where g.end_date is NULL;")
+    if show_active is True: 
+        cur.execute('''SELECT id, seats, (SELECT COUNT(*) FROM UserGames 
+                        WHERE game_id =g.id AND active = 1 ) active_players 
+                        FROM Games AS g 
+                        WHERE g.end_date is NULL and active_players between ? and ? ;''', (int(min_players), int(max_players)))    
+    else:
+        cur.execute('''SELECT id, seats, (SELECT COUNT(*) FROM UserGames 
+                        WHERE game_id =g.id AND active = 1 ) active_players 
+                        FROM Games AS g 
+                        WHERE active_players between ? and ? ;''', (int(min_players), int(max_players)))    
+
+    # cur.execute("SELECT id, seats, (SELECT COUNT(*) FROM UserGames WHERE game_id =g.id AND active = 1 ) active_players FROM Games AS g where g.end_date is NULL ;")
     return cur.fetchall()
 
 def leave_game(user_id, game_id):
@@ -287,12 +313,12 @@ def logger(email):
     cur.execute(f"SELECT id, password FROM Users where email = ?", (email, ))
     return cur.fetchall()
 
-join_game(4, 1)
-leave_game(6, 1)
-join_game(4, 1)
-join_game(6, 1)
-join_game(1, 2)
-join_game(2, 2)
+# join_game(4, 1)
+# leave_game(6, 1)
+# join_game(4, 1)
+# join_game(6, 1)
+# join_game(1, 2)
+# join_game(2, 2)
 
 # conn = sqlite3.connect('PokerDatabase')
 # with open('schema.sql') as f:
