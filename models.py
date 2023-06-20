@@ -313,12 +313,6 @@ def logger(email):
     cur.execute(f"SELECT id, password FROM Users where email = ?", (email, ))
     return cur.fetchall()
 
-# join_game(4, 1)
-# leave_game(6, 1)
-# join_game(4, 1)
-# join_game(6, 1)
-# join_game(1, 2)
-# join_game(2, 2)
 
 # conn = sqlite3.connect('PokerDatabase')
 # with open('schema.sql') as f:

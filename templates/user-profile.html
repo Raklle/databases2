@@ -10,6 +10,9 @@
     button {
         padding: 5px;
     }
+    input, select{
+        background-color: white;
+    }
 </style>  
 
 {% if data %}
@@ -312,7 +315,9 @@
     </form>
 
     <form method="POST" id = "modify_saldo">
-        <br><br><input id="saldo_input" name="saldo" type="text" disabled value={{ data[3] }}><br><br>
+        <br><br>
+        <h2>Saldo</h2>
+        <input id="saldo_input" name="saldo" type="text" disabled value={{ data[3] }}><br><br>
         <input id="saldo_input" name="saldo" type="text" style="height:23px; width:75px; margin-right: 10px;"><a><button type="button" id="deposit_money">Deposit money</button></a>
     </form>
     

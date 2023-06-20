@@ -1,12 +1,12 @@
-CREATE TABLE Users (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    first_name TEXT NOT NULL,
-    last_name TEXT NOT NULL,
-    balance REAL NOT NULL,
-    email TEXT NOT NULL,
-    country TEXT NOT NULL,
-    password TEXT NOT NULL
-);
+-- CREATE TABLE Users (
+--     id INTEGER PRIMARY KEY AUTOINCREMENT,
+--     first_name TEXT NOT NULL,
+--     last_name TEXT NOT NULL,
+--     balance REAL NOT NULL,
+--     email TEXT NOT NULL,
+--     country TEXT NOT NULL,
+--     password TEXT NOT NULL
+-- );
 
 -- CREATE TABLE Games (
 --     id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -74,3 +74,11 @@ CREATE TABLE Users (
 -- BEGIN
 --     SELECT RAISE(ABORT, 'Balance cannot be negative');
 -- END;
+
+CREATE TRIGGER PreventJoiningFinishedGames
+BEFORE INSERT ON UserGames
+FOR EACH ROW
+WHEN EXISTS (SELECT 1 FROM Games WHERE id = NEW.game_id AND end_date IS NOT NULL)
+BEGIN
+    SELECT RAISE(ABORT, 'Game already ended');
+END;
