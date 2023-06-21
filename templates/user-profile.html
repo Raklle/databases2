@@ -30,6 +30,10 @@
                 document.getElementById('button_test').value = "Update Data"
             }
         }
+
+        function submitForm(){
+            document.getElementById("modify_saldo").submit()
+        }
     </script>
 
     <form method="POST" id = "myForm">
@@ -313,7 +317,9 @@
 
     <form method="POST" id = "modify_saldo">
         <br><br><input id="saldo_input" name="saldo" type="text" disabled value={{ data[3] }}><br><br>
-        <input id="saldo_input" name="saldo" type="text" style="height:23px; width:75px; margin-right: 10px;"><a><button type="button" id="deposit_money">Deposit money</button></a>
+        
+        <input id="deposit_input" name="deposit_money" type="text" style="height:23px; width:75px; margin-right: 10px;"><a><button type="button" onclick=submitForm()>Deposit money</button></a><br><br>
+        <input id="withdraw_input" name="withdrawn_money" type="text" style="height:23px; width:75px; margin-right: 10px;"><a><button type="button" onclick=submitForm()>Withdraw money</button></a>
     </form>
     
 
