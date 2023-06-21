@@ -99,6 +99,20 @@ BEGIN
     SELECT RAISE(ABORT, 'Balance cannot be negative');
 END;
 ```
+
+### PreventJoiningFinishedGames 
+
+Ten trigger zapobiega dołączeniu do zakończonej gry.
+```
+CREATE TRIGGER PreventJoiningFinishedGames
+BEFORE INSERT ON UserGames
+FOR EACH ROW
+WHEN EXISTS (SELECT 1 FROM Games WHERE id = NEW.game_id AND end_date IS NOT NULL)
+BEGIN
+    SELECT RAISE(ABORT, 'Game already ended');
+END;
+```
+
 ## Widok: GamesView
 
 Ten widok zapewnia podsumowanie gier, w tym liczbę miejsc i liczbę aktywnych graczy dla każdej gry.
