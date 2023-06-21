@@ -29,6 +29,7 @@ def user_profile():
         return redirect(url_for('index'))
     
     if request.method == 'POST':
+
         if "firstname" in request.form: 
             first_name = request.form['firstname']
             last_name = request.form['lastname']
@@ -36,6 +37,16 @@ def user_profile():
             country = request.form['country']
             password = bcrypt.hashpw(request.form['password'].encode("utf-8"), bcrypt.gensalt())
             models.update_data(user_id, first_name, last_name, email, country, password)
+
+        if "deposit_money" in request.form and request.form["deposit_money"] != '':
+            amount = request.form['deposit_money']
+            print(f"Depositing users money!")
+            models.deposit(user_id, float(amount))
+        
+        if "withdrawn_money" in request.form and request.form["withdrawn_money"] != '':
+            amount = request.form['withdrawn_money']
+            print(f"Withdrawing users money!")
+            models.withdraw(user_id, float(amount))
     
     return render_template('user-profile.html', user_data = user_id, data=models.get_user_data(user_id)[0], show_user_profile = "True")
 
