@@ -1,5 +1,7 @@
 # Dokumentacja bazy danych
 
+![Schemat bazy](https://github.com/Raklle/databases2/blob/main/schema.png)
+
 ## Tabele:
 ## Users
 
