@@ -47,7 +47,13 @@ def user_profile():
             amount = request.form['withdrawn_money']
             print(f"Withdrawing users money!")
             models.withdraw(user_id, float(amount))
-    
+
+        if "money" in request.form and request.form["money"] != '' and request.form["receiver_id"] != '':
+            amount = request.form['money']
+            receiver = request.form['receiver_id']
+            print(f"Transfering {amount} to user: {receiver}")
+            models.transfer(user_id, receiver,None,  float(amount))
+
     return render_template('user-profile.html', user_data = user_id, data=models.get_user_data(user_id)[0], show_user_profile = "True")
 
 @app.route('/lobbies', methods=['GET', 'POST'])

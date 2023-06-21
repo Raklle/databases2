@@ -314,7 +314,7 @@ def logger(email):
     return cur.fetchall()
 
 
-# conn = sqlite3.connect('PokerDatabase')
-# with open('schema.sql') as f:
-#     conn.executescript(f.read())
-# conn.close()
+conn = sqlite3.connect('PokerDatabase')
+with open('schema.sql') as f:
+    conn.executescript(f.read())
+conn.close()

@@ -319,10 +319,15 @@
     </form>
 
     <form method="POST" id = "modify_saldo">
-        <br><br><input id="saldo_input" name="saldo" type="text" disabled value={{ data[3] }}><br><br>
+        <br><br>
+        <h2>Saldo</h2>
+        <input id="saldo_input" name="saldo" type="text" disabled value={{ data[3] }}><br><br>
         
         <input id="deposit_input" name="deposit_money" type="text" style="height:23px; width:75px; margin-right: 10px;"><a><button type="button" onclick=submitForm()>Deposit money</button></a><br><br>
         <input id="withdraw_input" name="withdrawn_money" type="text" style="height:23px; width:75px; margin-right: 10px;"><a><button type="button" onclick=submitForm()>Withdraw money</button></a>
+        <br><br><br><br>
+        <input id="transfer_input" name="money" type="text" placeholder="Amount" style="height:23px; width:75px; margin-right: 10px;">
+        <input id="name_input" name="receiver_id" type="text" placeholder="Receiver's ID" style="height:23px; width:75px; margin-right: 10px;"><a><button type="button" onclick=submitForm()>Transfer money</button></a>
     </form>
     
 

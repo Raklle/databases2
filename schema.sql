@@ -24,12 +24,13 @@
 --     FOREIGN KEY (game_id) REFERENCES Games (id) ON DELETE CASCADE
 -- );
 
+
 -- CREATE TABLE TransactionsHistory (
 --     id INTEGER PRIMARY KEY AUTOINCREMENT,
 --     date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
---     payer_id INTEGER NOT NULL,
---     receiver_id INTEGER NOT NULL,
---     game_id INTEGER NOT NULL,
+--     payer_id INTEGER,
+--     receiver_id INTEGER,
+--     game_id INTEGER,
 --     payment_amount INTEGER NOT NULL,
 --     FOREIGN KEY (payer_id) REFERENCES Users (id) ON DELETE CASCADE,
 --     FOREIGN KEY (receiver_id) REFERENCES Users (id) ON DELETE CASCADE,
@@ -75,10 +76,10 @@
 --     SELECT RAISE(ABORT, 'Balance cannot be negative');
 -- END;
 
-CREATE TRIGGER PreventJoiningFinishedGames
-BEFORE INSERT ON UserGames
-FOR EACH ROW
-WHEN EXISTS (SELECT 1 FROM Games WHERE id = NEW.game_id AND end_date IS NOT NULL)
-BEGIN
-    SELECT RAISE(ABORT, 'Game already ended');
-END;
+-- CREATE TRIGGER PreventJoiningFinishedGames
+-- BEFORE INSERT ON UserGames
+-- FOR EACH ROW
+-- WHEN EXISTS (SELECT 1 FROM Games WHERE id = NEW.game_id AND end_date IS NOT NULL)
+-- BEGIN
+--     SELECT RAISE(ABORT, 'Game already ended');
+-- END;
