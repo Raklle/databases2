@@ -152,12 +152,12 @@ def get_filtered_games(show_active = False, min_players = -9223372036854775808, 
 
     if show_active is True: 
         cur.execute('''SELECT id, seats, (SELECT COUNT(*) FROM UserGames 
-                        WHERE game_id =g.id AND active = 1 ) active_players 
+                        WHERE game_id =g.id AND active = 1 ) active_players , g.end_date
                         FROM Games AS g 
                         WHERE g.end_date is NULL and active_players between ? and ? ;''', (int(min_players), int(max_players)))    
     else:
         cur.execute('''SELECT id, seats, (SELECT COUNT(*) FROM UserGames 
-                        WHERE game_id =g.id AND active = 1 ) active_players 
+                        WHERE game_id =g.id AND active = 1 ) active_players , g.end_date
                         FROM Games AS g 
                         WHERE active_players between ? and ? ;''', (int(min_players), int(max_players)))    
 

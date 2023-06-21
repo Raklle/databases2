@@ -66,6 +66,7 @@ def lobbies():
     if request.method == 'POST' or request.method == 'GET':
         if "leave_room" in request.form:
             models.leave_game(user_id, game_id)
+            print(models.get_filtered_games(actual_button))
             return render_template('lobbies.html', data=models.get_filtered_games(actual_button), actual_button = actual_button, min_players = '0', max_players = '6', show_user_profile = "True")
         
         if "test" in request.form:
@@ -83,8 +84,10 @@ def lobbies():
             else:
                 actual_button = False
 
+            print(models.get_filtered_games(actual_button, min_players, max_players))
             return render_template('lobbies.html', data=models.get_filtered_games(actual_button, min_players, max_players),  actual_button = actual_button, min_players = str(min_players), max_players = str(max_players), show_user_profile = "True")
 
+    print(models.get_filtered_games(True))
     return render_template('lobbies.html', data=models.get_filtered_games(True), actual_button = actual_button,  min_players = '0', max_players ='6', show_user_profile = "True")
 
 @app.route('/sign-in', methods=['GET', 'POST'])
