@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+<style>
+    form {
+        padding: 10px;
+        }
+    </style>     
+    
+    <form method="POST">
+        <h2> Login Form </h2>
+        <h3><p>
+            <label for="email">Email</label><br>
+            <input id="user_email" name="email" type="text">
+        </p>
+        <p>
+            <label for="password">Password</label><br>
+            <input id="user_password" name="password" type="password">
+        </p></h3>
+
+        <input type="submit" value="Sign in" style="font-size: 15px; font-weight:bold; width:180px;">
+    </form>
+
+    {% if error %}
+        <h2 style="color:red">{{ error }}</h2>
+    {% endif %}
+
+{% endblock %}

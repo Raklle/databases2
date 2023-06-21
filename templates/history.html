@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %} Game History{% endblock %}
+{% block content %}
+
+<style>
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 50%;
+    }
+    
+    td, th {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #dddddd;
+    }
+  </style>
+
+  <h2> History </h2>
+
+    {% if data %}
+    <table>
+        <tr>
+            <th>GAME ID</th>
+            <th>DATE</th>
+            <th>View players</th>
+        </tr>
+        {% for item in data %}
+        <tr>
+            <form action="" method="POST">
+                <td>{{item[0]}}</td>
+                <td>{{item[2]}}</td>
+                <td><button name="show_players_info" type="submit" value={{item[0]}}> Show players</button></td>
+            </form>
+        </tr>
+        {% endfor %}
+    {% elif game_info %}
+    <table>
+        <tr>
+            <th>USERID</th> 
+            <th>NAME</th>
+        </tr>
+        {% for item in game_info %}
+        <tr>
+            <td>{{item[0]}}</td>
+            <td>{{item[1]}}</td>
+          </form>
+        </tr>
+        {% endfor %}
+    {% else %}
+        <p>There's nothing!<p>
+    {% endif %}
+</table>
+
+{% endblock %}

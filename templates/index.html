@@ -1,8 +1,23 @@
 {% extends 'base.html' %}
 {% block title %}Home{% endblock %}
 
+<style>
+
+</style>
 {% block content %}
-    <li><a href="/sign-up">Sign Up</a></li>
-    <li><a href="/lobbies">Games</a></li>
+
+    <h3>
+    {% if not show_user_profile%}
+        <li><a href="/register">Register</a></li>
+        <li><a href="/sign-in">Sign In</a></li>
+    {% endif %}
+
+    {% if show_user_profile%}
+        <li><a href="/user-profile">Go to user profile</a></li>
+        <li><a href="/lobbies">Show Games</a></li>
+        <li><a href="/logout">Log out<a></li>
+    {% endif %}
+    </h3>
+
     </ul>
 {% endblock %}

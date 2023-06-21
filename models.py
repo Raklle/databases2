@@ -41,14 +41,38 @@ def join_game(user_id, game_id):
     finally:
         conn.close()
 
-
-def leave_game(user_id, game_id):
+def update_data(user_id, first_name, last_name, email, country, password):
     """
-    This function allows a user to leave a game by updating the active status in the UserGames table.
+    This function is to update user's data.
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    data = (first_name, last_name, email, country, password, user_id)
 
-    Parameters:
-    - user_id: ID of the user
-    - game_id: ID of the game
+    try:
+        cur.execute(f"UPDATE Users SET first_name = ?, last_name = ?, email = ?, country = ?, password = ? where id = ?", data)
+        conn.commit()
+    except sqlite3.Error as e:
+        conn.rollback()
+        print(f'Error while modifiying data: {e}')
+    finally:
+        conn.close()
+
+def get_user_data(user_id):
+    """
+    This function retrives user data.
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    cur.execute(f"SELECT * FROM Users where id = {user_id}")
+    return cur.fetchall()
+
+def get_games():
+    """
+    This function retrieves a list of active games.
+
+    Returns:
+    - A list of active games
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
@@ -77,6 +101,19 @@ def get_active_games():
     cur.execute("SELECT * FROM GamesView")
     return cur.fetchall()
 
+def get_player_games_history(user_id):
+    """
+    This function retrieves a history of games for user with user_id.
+
+    Returns:
+    - A list of games
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+
+    cur.execute(f"SELECT * from Games g INNER JOIN UserGames UG on g.id = UG.game_id where UG.user_id = {user_id} and g.end_date is not NULL")
+    return cur.fetchall()
+
 def get_players(game_id):
     """
     This function retrieves a list of players for a specific game.
@@ -89,20 +126,46 @@ def get_players(game_id):
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
-    cur.execute("SELECT * FROM UserGames where game_id =" + str(game_id))
+    cur.execute("SELECT UserGames.user_id, Users.first_name || ' ' || Users.last_name as name FROM UserGames inner join Users on UserGames.user_id = Users.id where game_id = " + str(game_id))
     return cur.fetchall()
 
 
-def is_in_game(user_id, game_id):
+def get_filtered_games(show_active = False, min_players = -9223372036854775808, max_players = 9223372036854775807):
     """
-    This function checks if a user is already in a game.
+    This function retrieves a list of players for a specific game.
+
+    Parameters:
+    - game_id: ID of the game
+
+    Returns:
+    - A list of players for the given game
+    """
+
+    print(show_active, min_players, max_players)
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+
+    if show_active is True: 
+        cur.execute('''SELECT id, seats, (SELECT COUNT(*) FROM UserGames 
+                        WHERE game_id =g.id AND active = 1 ) active_players 
+                        FROM Games AS g 
+                        WHERE g.end_date is NULL and active_players between ? and ? ;''', (int(min_players), int(max_players)))    
+    else:
+        cur.execute('''SELECT id, seats, (SELECT COUNT(*) FROM UserGames 
+                        WHERE game_id =g.id AND active = 1 ) active_players 
+                        FROM Games AS g 
+                        WHERE active_players between ? and ? ;''', (int(min_players), int(max_players)))    
+
+    # cur.execute("SELECT id, seats, (SELECT COUNT(*) FROM UserGames WHERE game_id =g.id AND active = 1 ) active_players FROM Games AS g where g.end_date is NULL ;")
+    return cur.fetchall()
+
+def leave_game(user_id, game_id):
+    """
+    This function allows a user to leave a game by updating the active status in the UserGames table.
 
     Parameters:
     - user_id: ID of the user
     - game_id: ID of the game
-
-    Returns:
-    - True if the user is  in the game, otherwise False
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
@@ -166,6 +229,66 @@ def get_active_players(game_id):
     except sqlite3.Error as e:
         print(f'Error while retrieving active players: {e}')
 
+    finally:
+        conn.close()
+
+def transfer(payer_id, receiver_id, game_id, money):
+    """
+    This function transfers money from the payer's account to the receiver's account.
+
+    Parameters:
+    - payer_id: ID of the payer
+    - receiver_id: ID of the receiver
+    - game_id: ID of the game
+    - money: Amount of money to transfer
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    try:
+        # Remove money from payer's account
+        # Preventing negative balance is handled by a trigger
+        cur.execute('SELECT balance FROM Users WHERE id = ?', (payer_id,))
+        current_balance = cur.fetchone()[0]
+        cur.execute('UPDATE Users SET balance = ? WHERE id = ?',
+                    (current_balance - money, payer_id))
+
+        # Add money to receiver's account
+        cur.execute('SELECT balance FROM Users WHERE id = ?', (receiver_id,))
+        current_balance = cur.fetchone()[0]
+        cur.execute('UPDATE Users SET balance = ? WHERE id = ?',
+                    (current_balance + money, receiver_id))
+
+        cur.execute('INSERT INTO TransactionsHistory (payer_id, receiver_id, game_id, payment_amount) VALUES (?, ?, ?, ?)', (payer_id,receiver_id,game_id, money))
+        conn.commit()
+        return
+
+    except sqlite3.Error as e:
+        print(f'Error while processing money transfer: {e}')
+    finally:
+        conn.close()
+
+def add_user(first_name, last_name, email, country, password):
+    """
+    This function adds a user to the Users table. New country is added to Country table, if given doesn't exist.
+
+    Parameters:
+    - first_name: first name of the user
+    - last_name: last name of the game
+    - email: email of the user
+    - country: country ot the user
+    - password: users_password
+    """
+    conn = sqlite3.connect('PokerDatabase')
+    cur = conn.cursor()
+    data = (first_name, last_name, 0, email, country, password)
+
+    try:
+        cur.execute("INSERT INTO USERS (first_name, last_name, balance, email, country, password) VALUES (?,?,?,?,?,?)", data)
+        conn.commit()
+        print("New user added")
+    except sqlite3.Error as e:
+        conn.rollback()
+        print(f"Error while adding new user to database!")
     finally:
         conn.close()
 
@@ -281,35 +404,24 @@ def get_user_transaction_history(user_id):
     finally:
         conn.close()
 
-
-def add_user(first_name, last_name, email, country):
+def logger(email):
     """
-    This function adds a user to the Users table. New country is added to Country table, if given doesn't exist.
+    This function is to authenticate users data.
 
     Parameters:
-    - first_name: first name of the user
-    - last_name: last name of the game
-    - email: email of the user
-    - country: country ot the user
+    - email
+
+    Returns:
+    - password to validate
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
 
-    try:
-        cur.execute('SELECT EXISTS(SELECT 1 FROM Country WHERE CountryName = ?)', (country,))
-        country_exists = cur.fetchone()[0]
-        if not country_exists:
-            cur.execute('INSERT INTO Country (CountryName) VALUES (?)',
-                        (country,))
-        cur.execute('INSERT INTO Users (first_name, last_name, email, balance, country) VALUES (?, ?, ?, ?, ?)', (first_name, last_name, email, 0, country))
-        conn.commit()
-    except sqlite3.Error as e:
-        conn.rollback()
-        print(f'Error while creating user: {e}')
-    finally:
-        conn.close()
+    cur.execute(f"SELECT id, password FROM Users where email = ?", (email, ))
+    return cur.fetchall()
 
-# conn = sqlite3.connect('PokerDatabase')
-# with open('schema.sql') as f:
-#     conn.executescript(f.read())
-# conn.close()
+
+conn = sqlite3.connect('PokerDatabase')
+with open('schema.sql') as f:
+    conn.executescript(f.read())
+conn.close()
