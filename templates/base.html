@@ -54,7 +54,7 @@
     </style>
 
     <ul id="menu_navbar_ul">
-        <li class="navbar_link"><a href="/"><i class="fa-solid fa-house" style="color: #ffffff;"></i> Poker</a></li>
+        <li class="navbar_link"><a href="/"></i> Poker</a></li>
         {% if show_user_profile%}
             <li class="navbar_link"><a href="/user-profile">My Profile</a></li>
             <li class="navbar_link"><a href="/lobbies">Browse Games</a></li>
@@ -68,7 +68,7 @@
 </head>
 <body>
     {% if message %}
-        <p>Note: {{ message }}</p>
+        <p style="color:red; font-size:25px;">Note: {{ message }}</p>
     {% endif %}
     {% block content %}
     {% endblock %}

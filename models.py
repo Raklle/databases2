@@ -13,6 +13,8 @@ def join_game(user_id, game_id):
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
+    
+    error_message = ''
 
     try:
         cur.execute('SELECT EXISTS(SELECT 1 FROM UserGames WHERE user_id = ? AND game_id = ?)', (user_id, game_id))
@@ -36,10 +38,13 @@ def join_game(user_id, game_id):
     except sqlite3.Error as e:
         conn.rollback()
         print(f'Error while joining game: {e}')
+        error_message = str(f'Error while joining game: {e}')
     except AlreadyInGameException as e:
         print(str(f"User with ID {user_id} is already active in game with ID {game_id}"))
+        error_message = str(f"User with ID {user_id} is already active in game with ID {game_id}")
     finally:
         conn.close()
+        return error_message
 
 def update_data(user_id, first_name, last_name, email, country, password):
     """
@@ -67,7 +72,7 @@ def get_user_data(user_id):
     cur.execute(f"SELECT * FROM Users where id = {user_id}")
     return cur.fetchall()
 
-def get_games():
+def get_games(user_id, game_id):
     """
     This function retrieves a list of active games.
 
@@ -126,7 +131,7 @@ def get_players(game_id):
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
-    cur.execute("SELECT UserGames.user_id, Users.first_name || ' ' || Users.last_name as name FROM UserGames inner join Users on UserGames.user_id = Users.id where game_id = " + str(game_id))
+    cur.execute("SELECT UserGames.user_id, Users.first_name || ' ' || Users.last_name as name FROM UserGames inner join Users on UserGames.user_id = Users.id where UserGames.active = 1 and game_id = " + str(game_id))
     return cur.fetchall()
 
 
@@ -169,13 +174,18 @@ def leave_game(user_id, game_id):
     """
     conn = sqlite3.connect('PokerDatabase')
     cur = conn.cursor()
-    cur.execute('SELECT EXISTS(SELECT 1 FROM UserGames WHERE user_id = ? AND game_id = ?)', (user_id, game_id))
-    row_exists = cur.fetchone()[0]
-    conn.close()
-    if not row_exists:
-       return True
-    else:
-        return False
+    
+    try:
+        cur.execute('UPDATE UserGames SET active = ? WHERE user_id = ? AND game_id = ? AND active = ?',
+                    (False, user_id, game_id, True))
+        conn.commit()
+        print(f'User with ID {user_id} left game with ID {game_id}')
+    except sqlite3.Error as e:
+        conn.rollback()
+        print(f'Error while leaving game: {e} (User ID: {user_id})')
+    finally:
+        conn.close()
+
 
 def get_user_game_history(user_id):
     """
