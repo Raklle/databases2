@@ -8,4 +8,5 @@ Wykorzystane technologie:
 - SQLite
 - Flask
 
+[Dokumentacja bazy danych](https://github.com/Raklle/databases2/blob/main/docs.md)
 
