@@ -3,7 +3,7 @@
 - Tomasz Janik
 - Dominik Szot
 
-## Internetowa aplikacja do gry w pokera
+## Internetowa aplikacja do gry w pokera (bez gry w pokera)
 Wykorzystane technologie:
 - SQLite
 - Flask
